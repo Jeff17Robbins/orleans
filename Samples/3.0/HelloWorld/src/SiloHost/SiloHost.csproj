@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.0" />
     <PackageReference Include="Microsoft.Orleans.OrleansRuntime" Version="3.0.0" />
     <PackageReference Include="Microsoft.Orleans.OrleansProviders" Version="3.0.0" />
+    <PackageReference Include="SignalR.Orleans" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelloWorld.Grains\HelloWorld.Grains.csproj" />

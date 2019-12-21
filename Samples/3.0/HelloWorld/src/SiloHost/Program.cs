@@ -18,16 +18,30 @@ namespace OrleansSiloHost
                 .UseOrleans((context, siloBuilder) =>
                 {
                     siloBuilder
-                        .UseLocalhostClustering()
-                        .Configure<ClusterOptions>(options =>
+                        .UseSignalR(builder =>
                         {
-                            options.ClusterId = "dev";
-                            options.ServiceId = "HelloWorldApp";
-                        })
-                        .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
-                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(HelloGrain).Assembly).WithReferences())
-                        .AddMemoryGrainStorage(name: "ArchiveStorage");
+                            builder
+                                .Configure((innerSiloBuilder, config) =>
+                                {
+                                    innerSiloBuilder
+                                        //.UseLocalhostClustering(serviceId: "ChatSampleApp", clusterId: "dev")
+                                        .AddMemoryGrainStorage("PubSubStore")
+                                        //.ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(UserNotificationGrain).Assembly).WithReferences());
+                                        .UseLocalhostClustering()
+                                        .Configure<ClusterOptions>(options =>
+                                        {
+                                            options.ClusterId = "dev";
+                                            options.ServiceId = "HelloWorldApp";
+                                        })
+                                        .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
+                                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(HelloGrain).Assembly).WithReferences())
+                                        .AddMemoryGrainStorage(name: "ArchiveStorage");
+                                });
+                        });
                 })
+
+
+
                 .ConfigureServices(services =>
                 {
                     services.Configure<ConsoleLifetimeOptions>(options =>
