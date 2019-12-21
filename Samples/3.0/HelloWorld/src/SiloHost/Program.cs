@@ -15,9 +15,9 @@ namespace OrleansSiloHost
         public static Task Main(string[] args)
         {
             return new HostBuilder()
-                .UseOrleans(builder =>
+                .UseOrleans((context, siloBuilder) =>
                 {
-                    builder
+                    siloBuilder
                         .UseLocalhostClustering()
                         .Configure<ClusterOptions>(options =>
                         {
@@ -26,17 +26,7 @@ namespace OrleansSiloHost
                         })
                         .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
                         .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(HelloGrain).Assembly).WithReferences())
-                        .AddMemoryGrainStorage(name: "ArchiveStorage")
-                        .AddAzureBlobGrainStorage(
-                            name: "profileStore",
-                            configureOptions: options =>
-                            {
-                                // Use JSON for serializing the state in storage
-                                options.UseJson = true;
-
-                                // Configure the storage connection key
-                                options.ConnectionString = "DefaultEndpointsProtocol=https;AccountName=data1;AccountKey=SOMETHING1";
-                            });
+                        .AddMemoryGrainStorage(name: "ArchiveStorage");
                 })
                 .ConfigureServices(services =>
                 {
