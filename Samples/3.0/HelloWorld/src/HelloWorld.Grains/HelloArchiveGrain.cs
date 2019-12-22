@@ -1,8 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using HelloWorld.Interfaces;
 using Orleans;
 using Orleans.Runtime;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace HelloWorld.Grains
 {
@@ -20,6 +21,9 @@ namespace HelloWorld.Grains
             this._archive.State.Greetings.Add(greeting);
 
             await this._archive.WriteStateAsync();
+
+            var notifier = GrainFactory.GetGrain<IUserNotificationGrain>(Guid.Empty.ToString());
+            await notifier.SendMessageAsync("test", greeting);
 
             return $"You said: '{greeting}', I say: Hello!";
         }

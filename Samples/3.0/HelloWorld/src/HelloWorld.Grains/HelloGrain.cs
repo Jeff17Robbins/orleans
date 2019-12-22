@@ -1,5 +1,5 @@
-using HelloWorld.Interfaces;
 using System.Threading.Tasks;
+using HelloWorld.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace HelloWorld.Grains
