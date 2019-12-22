@@ -22,8 +22,8 @@ namespace HelloWorld.Grains
 
             await this._archive.WriteStateAsync();
 
-            var notifier = GrainFactory.GetGrain<IUserNotificationGrain>(Guid.Empty.ToString());
-            await notifier.SendMessageAsync("test", greeting);
+            //var notifier = GrainFactory.GetGrain<IUserNotificationGrain>(Guid.Empty.ToString());
+            //await notifier.SendMessageAsync("test", greeting);
 
             return $"You said: '{greeting}', I say: Hello!";
         }
