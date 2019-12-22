@@ -1,20 +1,27 @@
+using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using HelloWorld.Grains;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using SiloHost;
 
 namespace OrleansSiloHost
 {
     public class Program
     {
+        static string webRoot = "../../../wwwroot";
+
         public static Task Main(string[] args)
         {
             return new HostBuilder()
+
                 .UseOrleans(siloBuilder =>
                 {
                     siloBuilder
@@ -37,6 +44,15 @@ namespace OrleansSiloHost
 
                                 });
                         });
+                })
+                // Install-Package Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv -Version 3.1.0
+                .ConfigureWebHostDefaults(builder =>
+                {
+                    builder
+                        .UseUrls("http://localhost:5000")
+                        .UseSetting(WebHostDefaults.DetailedErrorsKey, "true")
+                        .UseWebRoot(webRoot)
+                        .UseStartup<WebStartupHandler>();
                 })
                 .ConfigureServices(services =>
                 {
