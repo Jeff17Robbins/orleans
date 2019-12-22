@@ -24,7 +24,7 @@ namespace OrleansClient
             var response = await friend.SayHello("Good morning, my friend!");
             Console.WriteLine($"{response}");
 
-            // example of calling IHelloArchive grqain that implements persistence
+            // example of calling IHelloArchive grain that implements persistence
             var g = this._client.GetGrain<IHelloArchive>(0);
             response = await g.SayHello("Good day!");
             Console.WriteLine($"{response}");

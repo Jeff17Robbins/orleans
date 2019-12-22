@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" Version="3.0.0" PrivateAssets="all">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="SignalR.Orleans" Version="1.5.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\HelloWorld.Interfaces\HelloWorld.Interfaces.csproj" />

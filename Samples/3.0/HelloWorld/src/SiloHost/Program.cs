@@ -15,7 +15,7 @@ namespace OrleansSiloHost
         public static Task Main(string[] args)
         {
             return new HostBuilder()
-                .UseOrleans((context, siloBuilder) =>
+                .UseOrleans(siloBuilder =>
                 {
                     siloBuilder
                         .UseSignalR(builder =>
@@ -24,9 +24,8 @@ namespace OrleansSiloHost
                                 .Configure((innerSiloBuilder, config) =>
                                 {
                                     innerSiloBuilder
-                                        //.UseLocalhostClustering(serviceId: "ChatSampleApp", clusterId: "dev")
+                                        .AddMemoryGrainStorage(name: "ArchiveStorage")
                                         .AddMemoryGrainStorage("PubSubStore")
-                                        //.ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(UserNotificationGrain).Assembly).WithReferences());
                                         .UseLocalhostClustering()
                                         .Configure<ClusterOptions>(options =>
                                         {
@@ -34,14 +33,11 @@ namespace OrleansSiloHost
                                             options.ServiceId = "HelloWorldApp";
                                         })
                                         .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
-                                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(HelloGrain).Assembly).WithReferences())
-                                        .AddMemoryGrainStorage(name: "ArchiveStorage");
+                                        .ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(HelloGrain).Assembly).WithReferences());
+
                                 });
                         });
                 })
-
-
-
                 .ConfigureServices(services =>
                 {
                     services.Configure<ConsoleLifetimeOptions>(options =>
