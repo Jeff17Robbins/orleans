@@ -12,7 +12,7 @@ using Orleans.Configuration;
 using Orleans.Hosting;
 using SiloHost;
 
-namespace OrleansSiloHost
+namespace SiloHost
 {
     public class Program
     {
@@ -61,9 +61,28 @@ namespace OrleansSiloHost
                         options.SuppressStatusMessages = true;
                     });
                 })
-                .ConfigureLogging(builder =>
+                .ConfigureLogging(logging =>
                 {
-                    builder.AddConsole();
+                    logging.ClearProviders();
+                    logging.AddConsole(c =>
+                    {
+                        // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
+                        c.TimestampFormat = "[HH:mm:ss.fff] ";
+                        c.IncludeScopes = false;
+                    });
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                    logging.AddFilter((provider, category, logLevel) =>
+                    {
+                        // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.0
+                        if (category.StartsWith("SiloHost") || category.StartsWith("HelloWorld")) // || category.StartsWith("Orleans.Runtime.GrainDirectory.LocalGrainDirectory"))
+                            return true;
+
+                        if (logLevel > LogLevel.Information)
+                            return true;
+
+                        return false;
+
+                    });
                 })
                 .RunConsoleAsync();
         }

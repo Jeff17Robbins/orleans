@@ -29,14 +29,13 @@ namespace HelloWorld.Grains
 
         async Task<string> IHello.SayHello(string greeting)
         {
-            var groupId = this.GetPrimaryKeyString();
+            var groupId = "group1"; // this.GetPrimaryKeyString();
             const string name = "SayHello";
 
             _logger.LogInformation($"SayHello message received: greeting = '{greeting}'");
             _logger.LogInformation($"Sending message to group: {groupId}. MethodName:{BroadcastMessage} Name:{name}, Message:{greeting}");
 
             await _hubContext.Group(groupId).Send(BroadcastMessage, name, greeting);
-
 
             return await Task.FromResult($"You said: '{greeting}', I say: Hello!");
         }
