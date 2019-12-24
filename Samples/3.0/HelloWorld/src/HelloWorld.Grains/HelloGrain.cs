@@ -13,7 +13,7 @@ namespace HelloWorld.Grains
     {
         private const string BroadcastMessage = "BroadcastMessage";
         private readonly ILogger<HelloGrain> _logger;
-        private HubContext<IChatHub> _hubContext;
+        private HubContext<IPushHub> _hubContext;
 
         public HelloGrain(ILogger<HelloGrain> logger)
         {
@@ -23,7 +23,7 @@ namespace HelloWorld.Grains
         public override Task OnActivateAsync()
         {
             _logger.LogInformation($"{nameof(OnActivateAsync)} called");
-            _hubContext = GrainFactory.GetHub<IChatHub>();
+            _hubContext = GrainFactory.GetHub<IPushHub>();
             return Task.CompletedTask;
         }
 

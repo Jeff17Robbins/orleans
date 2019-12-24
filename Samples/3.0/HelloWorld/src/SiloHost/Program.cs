@@ -1,5 +1,4 @@
-using System;
-using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HelloWorld.Grains;
@@ -10,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
-using SiloHost;
 
 namespace SiloHost
 {
@@ -20,8 +18,7 @@ namespace SiloHost
 
         public static Task Main(string[] args)
         {
-            return new HostBuilder()
-
+            var hostBuilder = new HostBuilder()
                 .UseOrleans(siloBuilder =>
                 {
                     siloBuilder
@@ -83,8 +80,11 @@ namespace SiloHost
                         return false;
 
                     });
-                })
-                .RunConsoleAsync();
+                });
+
+            var built = hostBuilder.UseConsoleLifetime().Build();   //.RunConsoleAsync();
+
+            return built.RunAsync();
         }
     }
 }
