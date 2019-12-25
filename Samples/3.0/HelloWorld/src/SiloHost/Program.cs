@@ -61,6 +61,7 @@ namespace SiloHost
                 .ConfigureLogging(logging =>
                 {
                     logging.ClearProviders();
+                    //logging.AddDebug(); // uncomment if you want to see everything in VS's Output window
                     logging.AddConsole(c =>
                     {
                         // https://www.c-sharpcorner.com/blogs/date-and-time-format-in-c-sharp-programming1
@@ -70,6 +71,9 @@ namespace SiloHost
                     logging.SetMinimumLevel(LogLevel.Trace);
                     logging.AddFilter((provider, category, logLevel) =>
                     {
+                        if (provider == "Microsoft.Extensions.Logging.Debug.DebugLoggerProvider")
+                            return true;
+
                         // https://docs.microsoft.com/en-us/aspnet/core/fundamentals/logging/?view=aspnetcore-3.0
                         if (category.StartsWith("SiloHost") || category.StartsWith("HelloWorld")) // || category.StartsWith("Orleans.Runtime.GrainDirectory.LocalGrainDirectory"))
                             return true;
