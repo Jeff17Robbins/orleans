@@ -1,4 +1,4 @@
-#define LOG_MEMORY_PERF_COUNTERS
+//#define LOG_MEMORY_PERF_COUNTERS
 
 using Microsoft.Extensions.Logging;
 using Orleans.Internal;
@@ -145,6 +145,7 @@ namespace Orleans.Statistics
             cpuCounterPF?.Dispose();
             availableMemoryCounterPF?.Dispose();
 
+ #if LOG_MEMORY_PERF_COUNTERS
             timeInGCPF?.Dispose();
             if (genSizesPF != null)
                 foreach (var item in genSizesPF)
@@ -156,6 +157,8 @@ namespace Orleans.Statistics
             numberOfInducedGCsPF?.Dispose();
             largeObjectHeapSizePF?.Dispose();
             promotedFinalizationMemoryFromGen0PF?.Dispose();
+#endif
+
             cpuUsageTimer?.Dispose();
         }
 
