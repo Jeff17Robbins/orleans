@@ -14,7 +14,9 @@ using Orleans.Hosting;
 namespace Benchmarks.Ping
 {
     [MemoryDiagnoser]
+#pragma warning disable CA1063 // Implement IDisposable Correctly
     public class PingBenchmark : IDisposable 
+#pragma warning restore CA1063 // Implement IDisposable Correctly
     {
         private readonly List<ISiloHost> hosts = new List<ISiloHost>();
         private readonly IPingGrain grain;
@@ -141,7 +143,9 @@ namespace Benchmarks.Ping
         }
 
         [GlobalCleanup]
+#pragma warning disable CA1063 // Implement IDisposable Correctly
         public void Dispose()
+#pragma warning restore CA1063 // Implement IDisposable Correctly
         {
             (this.client as IDisposable)?.Dispose(); 
             this.hosts.ForEach(h => h.Dispose());
